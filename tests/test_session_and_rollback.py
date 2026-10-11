@@ -57,6 +57,7 @@ def test_15_rollback_can_restore_previous_version(tmp_path):
 
     env = dict(os.environ)
     env["PROJECT_DIR"] = str(mock_project)
+    env["TEST_ROLLBACK"] = "1"
 
     proc = subprocess.run(
         ["bash", str(rollback_script), str(mock_backup)],

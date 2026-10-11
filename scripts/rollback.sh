@@ -11,10 +11,12 @@ fi
 
 echo "Rolling back from ${BACKUP_TARGET}..."
 
-# Stop systemd service if running
-if systemctl is-active --quiet telegram-auto-reply.service 2>/dev/null; then
-    echo "Stopping telegram-auto-reply service..."
-    systemctl stop telegram-auto-reply.service
+# Stop systemd service if running and not in test mode
+if [ -z "${TEST_ROLLBACK:-}" ]; then
+    if systemctl is-active --quiet telegram-auto-reply.service 2>/dev/null; then
+        echo "Stopping telegram-auto-reply service..."
+        systemctl stop telegram-auto-reply.service
+    fi
 fi
 
 # Restore app.py
