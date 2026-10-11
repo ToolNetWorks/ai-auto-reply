@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_DIR="/root/telegram-auto-reply"
+PROJECT_DIR="${PROJECT_DIR:-/root/telegram-auto-reply}"
 BACKUP_TARGET="${1:-${PROJECT_DIR}/backups/latest}"
 
 if [ ! -d "${BACKUP_TARGET}" ]; then

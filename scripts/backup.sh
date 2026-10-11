@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_DIR="/root/telegram-auto-reply"
+PROJECT_DIR="${PROJECT_DIR:-/root/telegram-auto-reply}"
 BACKUP_DIR="${PROJECT_DIR}/backups/$(date +%Y%m%d_%H%M%S)"
 
 mkdir -p "${BACKUP_DIR}"
