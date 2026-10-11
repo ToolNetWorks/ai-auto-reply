@@ -1,0 +1,52 @@
+{
+  "name": "telegram-ai-auto-reply",
+  "description": "Telegram AI Auto Reply - Production-Ready Worker",
+  "billing": {
+    "deploymentPlan": "micro"
+  },
+  "deployment": {
+    "instances": 1,
+    "restartPolicy": "always",
+    "docker": {
+      "dockerfilePath": "Dockerfile",
+      "dockerfileContext": "."
+    },
+    "healthCheck": {
+      "type": "exec",
+      "command": [
+        "python",
+        "scripts/healthcheck.py"
+      ],
+      "initialDelaySeconds": 15,
+      "periodSeconds": 30,
+      "timeoutSeconds": 5,
+      "failureThreshold": 3
+    },
+    "volumes": [
+      {
+        "name": "telegram-session-storage",
+        "mountPath": "/app/data",
+        "size": 1
+      }
+    ],
+    "environment": {
+      "TELEGRAM_SESSION_PATH": "/app/data/telegram_auto_reply",
+      "DATABASE_PROVIDER": "turso",
+      "TURSO_DATABASE_URL": "${TURSO_DATABASE_URL}",
+      "TURSO_AUTH_TOKEN": "${TURSO_AUTH_TOKEN}",
+      "AI_BASE_URL": "https://api.toolnet.tech/v1",
+      "AI_API_KEY": "${AI_API_KEY}",
+      "AI_MODEL": "groq/qwen/qwen3.8-27b",
+      "AI_TIMEOUT": "30",
+      "AI_MAX_TOKENS": "300",
+      "AI_TEMPERATURE": "0.7",
+      "ACTIVITY_GRACE_PERIOD": "120",
+      "USER_COOLDOWN_SECONDS": "600",
+      "MAX_REPLIES_PER_HOUR": "10",
+      "MANUAL_REPLY_PAUSE_SECONDS": "1800",
+      "HISTORY_MESSAGE_LIMIT": "20",
+      "TELEGRAM_API_ID": "${TELEGRAM_API_ID}",
+      "TELEGRAM_API_HASH": "${TELEGRAM_API_HASH}"
+    }
+  }
+}

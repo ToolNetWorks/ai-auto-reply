@@ -1,0 +1,23 @@
+[Unit]
+Description=Telegram AI Auto Reply Service
+After=network.target network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/telegram-auto-reply
+EnvironmentFile=/root/telegram-auto-reply/.env
+ExecStart=/root/telegram-auto-reply/.venv/bin/python /root/telegram-auto-reply/app.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

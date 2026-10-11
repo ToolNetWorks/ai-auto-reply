@@ -1,0 +1,28 @@
+services:
+  telegram-auto-reply:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: telegram-auto-reply:latest
+    container_name: telegram-auto-reply
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TELEGRAM_SESSION_PATH=/app/data/telegram_auto_reply
+      - DATA_DIR=/app/data
+      - LOGS_DIR=/app/logs
+      - DATABASE_PROVIDER=sqlite
+      - SQLITE_DB_PATH=/app/data/auto_reply.db
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./telegram_auto_reply.session:/app/data/telegram_auto_reply.session
+    stop_signal: SIGTERM
+    stop_grace_period: 15s
+    healthcheck:
+      test: ["CMD", "python", "scripts/healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
